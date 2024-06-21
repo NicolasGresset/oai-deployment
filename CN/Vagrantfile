@@ -1,0 +1,15 @@
+Vagrant.configure("2") do |config|
+  config.vm.define "CN" do |cn|
+    cn.vm.box = "generic/ubuntu2004"
+    cn.vm.hostname = "CN"
+    cn.vm.network :private_network, ip: "192.168.200.2", libvirt__network_name: "net33"
+    cn.vm.provider :libvirt do |libvirt|
+      libvirt.memory = 2048
+      libvirt.cpus = 1
+      libvirt.storage_pool_name = "vm"
+    end
+    cn.vm.provision "shell", path: "cn-dependencies.sh"
+    cn.vm.provision "file", source: "start.sh", destination: "/home/vagrant/start.sh"
+    cn.vm.provision "file", source: "stop.sh", destination: "/home/vagrant/stop.sh"
+  end
+end
